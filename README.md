@@ -9,10 +9,10 @@ List aliases \[of an account\]
 
     python dfalias.py --list [ACCOUNT]
 
-### Example
+#### Example
 
-    python dfalias.py --list
-    python dfalias.py --list pete@example.org
+    python dfalias.py -l
+    python dfalias.py -l pete@example.org
 
 
 Create an alias for an account
@@ -20,7 +20,7 @@ Create an alias for an account
 
     python dfalias.py --account ACCOUNT --create ALIAS
 
-### Example
+#### Example
 
     python dfalias.py -a pete@example.org -c ebay@example.org
 
@@ -30,7 +30,7 @@ Delete an alias of an account
 
     python dfalias.py --account ACCOUNT --delete ALIAS
 
-### Example
+#### Example
 
     python dfalias.py -a pete@example.org -d ebay@example.org
 
