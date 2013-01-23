@@ -1,7 +1,7 @@
 dfalias.py - df.eu email alias manager
 ========================================
 
-Manage aliases of df.eu email accounts
+Manage aliases of df.eu email accounts.
 
 
 List aliases \[of an account\]
