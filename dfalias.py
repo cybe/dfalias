@@ -4,6 +4,7 @@
 import argparse
 import urlparse
 import netrc
+import re
 
 import mechanize
 from lxml import etree
@@ -123,6 +124,11 @@ class Connection(object):
 			for account_data in self.accounts.values():
 				addresses.extend(account_data["aliases"])
 			return alias in addresses
+			
+	def is_email_valid(self, email):
+		pattern = r"\b[a-zA-Z0-9._%+-]*[a-zA-Z0-9_%+-]+@[a-zA-Z0-9.-]+" + \
+			r"\.[a-zA-Z]{2,4}\b"
+		return re.match(pattern, email)
 	
 	def create_alias(self, alias, account):
 		# safety checks
@@ -131,6 +137,9 @@ class Connection(object):
 			raise SystemExit(1)
 		if self.is_alias_defined(alias):
 			print("alias already defined")
+			raise SystemExit(1)
+		if not self.is_email_valid(alias):
+			print("alias is not a valid email address")
 			raise SystemExit(1)
 		if not alias.split("@")[1] in self.domains:
 			print("domain is not under df.eu management")
