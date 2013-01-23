@@ -77,7 +77,7 @@ class Connection(object):
 		
 		doc = etree.parse(res, etree.HTMLParser())
 		self.domains = doc.xpath("//table[@class=" + \
-		"'fancy_table tab_list sdw_border hottrack']//td[1]/text()")
+			"'fancy_table tab_list sdw_border hottrack']//td[1]/text()")
 	
 	def retrieve_accounts(self):
 		# go to the table of email addresses and extract them
