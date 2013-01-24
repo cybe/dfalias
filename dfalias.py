@@ -104,7 +104,10 @@ class Connection(object):
 		self.accounts = accounts
 		
 	def list_accounts(self, filter=""):
-		for account, account_data in self.accounts.iteritems():
+		sorted_accounts = sorted(self.accounts, \
+			key=lambda a: (a.split("@")[1], a.split("@")[0]))
+		for account in sorted_accounts:
+			account_data = self.accounts[account]
 			if filter in account:
 				print("\033[1m{}:\033[0m (dn={}, eaid={})". \
 					format(account, account_data["dn"], account_data["eaid"]))
