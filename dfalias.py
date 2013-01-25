@@ -235,7 +235,7 @@ def main():
 	
 	# obtains credentials from .netrc, if available
 	# may be overriden by specifying USERNAME and PASSWORD
-	if not USERNAME and not PASSWORD:
+	if not (USERNAME and PASSWORD):
 		try:
 			username, password = password_from_netrc("admin.df.eu")
 		except TypeError:
