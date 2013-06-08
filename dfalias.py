@@ -45,8 +45,18 @@ class Connection(object):
 		return br
 	
 	def login(self):
-		# open login page and login
-		self.br.open(self.url)
+		# open login page
+		res = self.br.open(self.url)
+		
+		# check for maintenance #1
+		doc = etree.parse(res, etree.HTMLParser())
+		maintenance1 = doc. \
+			xpath("//section[@class='wartungszyklus-overview']")
+		if maintenance1:
+			print("df.eu befindet sich momentan im Wartungsmodus")
+			raise SystemExit(1)
+		
+		# login
 		self.br.select_form(nr=0)
 		self.br.form.set_all_readonly(False)
 		self.br.form['login'] = self.username
@@ -63,9 +73,9 @@ class Connection(object):
 			print("username and or password wrong")
 			raise SystemExit(1)
 
-		# maintenance?
-		maintenance = doc.xpath("//div[@class='househeader']/text()")
-		if maintenance:
+		# check for maintenance #2
+		maintenance2 = doc.xpath("//div[@class='househeader']/text()")
+		if maintenance2:
 			print("df.eu befindet sich momentan im Wartungsmodus")
 			raise SystemExit(1)
 			
