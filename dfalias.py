@@ -100,14 +100,24 @@ class Connection(object):
 			xpath("//table[@id='accountTable']//child::tr[@style='']")
 
 		accounts = {}
+		alias_pattern = re.compile("addListItem\('(.+)', 'alias'\);")
+		
 		for account_doc in accounts_doc:
 			account = account_doc.xpath("td[1]//td[2]/text()[1]")[0].strip()
-			aliases = account_doc.xpath("td[1]//td[2]/small/text()")
 			qs = urlparse.parse_qs(account_doc.xpath("td[13]//a[1]/@href")[0])
+			dn = qs['dn'][0]
+			eaid = qs['eaid'][0]
+			
+			# go to email editing to list *full* email aliases
+			path = self.br.geturl().split("?")[0]
+			location = "{}?action=edit&dn={}&eaid={}".format(path, dn, eaid)
+			res = self.br.open(location)
+			aliases = alias_pattern.findall(res.get_data())
+
 			account_data = {
 				"aliases" : aliases,
-				"dn" : qs['dn'][0],
-				"eaid": qs['eaid'][0],
+				"dn" : dn,
+				"eaid": eaid,
 			}
 			accounts[account] = account_data
 			
