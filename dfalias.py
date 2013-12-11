@@ -79,6 +79,15 @@ class Connection(object):
 			print("df.eu befindet sich momentan im Wartungsmodus")
 			raise SystemExit(1)
 		
+		# check for account review
+		account_review = \
+			doc.xpath("//section[@class='startauftrag-daten_pruefen']")
+		if account_review:
+			print("Die Kundendaten des Accounts müssen überprüft werden." + \
+				" Für diesen Vorgang ist ein manuelles einloggen im" + \
+				" Browser erforderlich.")
+			raise SystemExit(1)
+		
 		self.retrieve_available_domains()
 	
 	def retrieve_available_domains(self):
