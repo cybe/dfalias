@@ -80,7 +80,7 @@ class Connection(object):
 			raise SystemExit(1)
 		
 		self.retrieve_available_domains()
-		
+	
 	def retrieve_available_domains(self):
 		# the list of domains are available within the statistics area
 		req = self.br.click_link(text="Statistiken anzeigen")
