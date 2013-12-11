@@ -33,12 +33,12 @@ class Connection(object):
 		br.set_handle_redirect(True)
 		br.set_handle_referer(True)
 		br.set_handle_robots(False)
-
+		
 		# debug
 		br.set_debug_http(False)
 		br.set_debug_redirects(False)
 		br.set_debug_responses(False)
-
+		
 		br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; Ubuntu; ' + \
 			'Linux i686; rv:15.0) Gecko/20100101 Firefox/15.0.1')]
 		
@@ -72,13 +72,13 @@ class Connection(object):
 			and "Login fehlgeschlagen" in unsuccessfull_login[0]:
 			print("username and or password wrong")
 			raise SystemExit(1)
-
+		
 		# check for maintenance #2
 		maintenance2 = doc.xpath("//div[@class='househeader']/text()")
 		if maintenance2:
 			print("df.eu befindet sich momentan im Wartungsmodus")
 			raise SystemExit(1)
-			
+		
 		self.retrieve_available_domains()
 		
 	def retrieve_available_domains(self):
@@ -98,7 +98,7 @@ class Connection(object):
 		doc = etree.parse(res, etree.HTMLParser())
 		accounts_doc = doc. \
 			xpath("//table[@id='accountTable']//child::tr[@style='']")
-
+		
 		accounts = {}
 		alias_pattern = re.compile("addListItem\('(.+)', 'alias'\);")
 		
@@ -113,7 +113,7 @@ class Connection(object):
 			location = "{}?action=edit&dn={}&eaid={}".format(path, dn, eaid)
 			res = self.br.open(location)
 			aliases = alias_pattern.findall(res.get_data())
-
+			
 			account_data = {
 				"aliases" : aliases,
 				"dn" : dn,
@@ -122,7 +122,7 @@ class Connection(object):
 			accounts[account] = account_data
 			
 		self.accounts = accounts
-		
+	
 	def list_accounts(self, filter=""):
 		sorted_accounts = sorted(self.accounts, \
 			key=lambda a: (a.split("@")[1], a.split("@")[0]))
@@ -134,10 +134,10 @@ class Connection(object):
 				for alias in account_data["aliases"]:
 					print("  " + alias)
 				print("")
-				
+	
 	def is_account_existent(self, account):
 		return account in self.accounts.keys()
-				
+	
 	def is_alias_defined(self, alias, account=None):
 		if account:
 			return alias in self.accounts[account]["aliases"]
@@ -147,7 +147,7 @@ class Connection(object):
 			for account_data in self.accounts.values():
 				addresses.extend(account_data["aliases"])
 			return alias in addresses
-			
+	
 	def is_email_valid(self, email):
 		pattern = r"\b[a-zA-Z0-9._%+-]*[a-zA-Z0-9_%+-]+@[a-zA-Z0-9.-]+" + \
 			r"\.[a-zA-Z]{2,4}\b"
@@ -263,7 +263,7 @@ def main():
 			raise SystemExit(1)
 	else:
 		username, password = USERNAME, PASSWORD
-		
+	
 	c = Connection(URL, username, password)
 	c.login()
 	
@@ -298,5 +298,4 @@ def main():
 
 if __name__ == '__main__':
 	main()
-
 
